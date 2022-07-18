@@ -1,16 +1,11 @@
-# foodship_seller_app
+# Foodship Seller App
 
-A new Flutter project.
+The appliciation use for the restaurants which want sell the food through appliciation and delivered by shipper
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Image Demo
+![image](https://user-images.githubusercontent.com/83216140/179474499-cc52e264-2a7e-4d52-8ab2-7cb8f47cb58c.png)
+![image](https://user-images.githubusercontent.com/83216140/179475108-98a3d92f-04d0-4610-aef7-4b1500258c41.png)
+![image](https://user-images.githubusercontent.com/83216140/179475155-44c06877-3763-46aa-b2b2-4dd862c9c9dd.png)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
