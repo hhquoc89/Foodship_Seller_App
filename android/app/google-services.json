@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "26094223393",
+    "project_id": "foodship-18090",
+    "storage_bucket": "foodship-18090.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26094223393:android:4108b59ed1fd71676da360",
+        "android_client_info": {
+          "package_name": "com.huyquoc.foodship_seller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26094223393-krb0am4b3g8vh0hc257bfo2hsjc7sfnc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP8hSFWJskV0EjQCK0e00IXMP-5DiVKPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26094223393-krb0am4b3g8vh0hc257bfo2hsjc7sfnc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
