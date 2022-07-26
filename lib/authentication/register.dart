@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           String fileName = DateTime.now().millisecondsSinceEpoch.toString();
           fStorage.Reference reference = fStorage.FirebaseStorage.instance
               .ref()
-              .child('seller')
+              .child('sellers')
               .child(fileName);
           fStorage.UploadTask uploadTask =
               reference.putFile(File(imageXFile!.path));
@@ -154,7 +154,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future saveDataToFireStore(User currentUser) async {
-    FirebaseFirestore.instance.collection("seller").doc(currentUser.uid).set({
+    FirebaseFirestore.instance.collection("sellers").doc(currentUser.uid).set({
       "sellerUID": currentUser.uid,
       "sellerEmail": currentUser.email,
       "sellerName": nameController.text.trim(),
