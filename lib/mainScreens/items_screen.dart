@@ -1,69 +1,71 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
 import 'package:foodship_seller_app/global/global.dart';
-
+import 'package:foodship_seller_app/models/items.dart';
 import 'package:foodship_seller_app/models/menu.dart';
-
+import 'package:foodship_seller_app/uploadScreens/items_upload_screen.dart';
 import 'package:foodship_seller_app/uploadScreens/menu_upload_screen.dart';
 import 'package:foodship_seller_app/widgets/info_design.dart';
+import 'package:foodship_seller_app/widgets/items_design.dart';
 import 'package:foodship_seller_app/widgets/my_drawer.dart';
-import 'package:foodship_seller_app/widgets/progress_bar.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+import '../widgets/progress_bar.dart';
+
+class ItemsScreen extends StatefulWidget {
+  final Menus? model;
+  const ItemsScreen({this.model});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ItemsScreen> createState() => _ItemsScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ItemsScreenState extends State<ItemsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            colors: [
-              Colors.cyan,
-              Colors.amber,
-            ],
-            begin: FractionalOffset(0.0, 0.0),
-            end: FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          )),
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+              colors: [
+                Colors.cyan,
+                Colors.amber,
+              ],
+              begin: FractionalOffset(0.0, 0.0),
+              end: FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            )),
+          ),
+          title: Text(
+            sharedPreferences!.getString("name")!,
+            style: const TextStyle(fontFamily: 'Signatra', fontSize: 30),
+          ),
+          centerTitle: true,
+          automaticallyImplyLeading: true,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (c) =>
+                              ItemsUploadScreen(model: widget.model)));
+                },
+                icon: const Icon(
+                  Icons.post_add,
+                  color: Colors.greenAccent,
+                ))
+          ],
         ),
-        title: Text(
-          sharedPreferences!.getString("name")!,
-          style: const TextStyle(fontFamily: 'Signatra', fontSize: 30),
-        ),
-        centerTitle: true,
-        automaticallyImplyLeading: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (c) => const MenuUploadScreen()));
-              },
-              icon: const Icon(
-                Icons.post_add,
-                color: Colors.greenAccent,
-              ))
-        ],
-      ),
-      drawer: const MyDrawer(),
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
+        drawer: const MyDrawer(),
+        body: CustomScrollView(slivers: [
+          SliverAppBar(
             backgroundColor: Colors.transparent,
             title: Center(
                 child: Text(
-              'Menu',
+              widget.model!.menuTitle.toString() + ' Items',
               style: TextStyle(color: Colors.black),
             )),
             automaticallyImplyLeading: false,
@@ -73,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 .collection('sellers')
                 .doc(sharedPreferences!.getString('uid'))
                 .collection('menus')
-                .orderBy("publishedDate",descending: true)
+                .doc(widget.model!.menuID)
+                .collection('items')
                 .snapshots(),
             builder: (context, snapshot) {
               return !snapshot.hasData
@@ -95,13 +98,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         childrenDelegate: SliverChildBuilderDelegate(
                           (context, index) {
-                            Menus sModel = Menus.fromJson(
+                            Items model = Items.fromJson(
                                 snapshot.data!.docs[index].data()!
                                     as Map<String, dynamic>);
                             // design display sellers
 
-                            return InfoDesignWidget(
-                              model: sModel,
+                            return ItemsDesignWidget(
+                              model: model,
                               context: context,
                             );
                           },
@@ -111,8 +114,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
             },
           ),
-        ],
-      ),
-    );
+        ]));
   }
 }

@@ -33,6 +33,64 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26094223393:android:e8eebf63f306c2da6da360",
+        "android_client_info": {
+          "package_name": "com.huyquoc.foodship_shipper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26094223393-krb0am4b3g8vh0hc257bfo2hsjc7sfnc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP8hSFWJskV0EjQCK0e00IXMP-5DiVKPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26094223393-krb0am4b3g8vh0hc257bfo2hsjc7sfnc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26094223393:android:32609c7215ee60536da360",
+        "android_client_info": {
+          "package_name": "com.huyquoc.foodship_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26094223393-krb0am4b3g8vh0hc257bfo2hsjc7sfnc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP8hSFWJskV0EjQCK0e00IXMP-5DiVKPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26094223393-krb0am4b3g8vh0hc257bfo2hsjc7sfnc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

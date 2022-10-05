@@ -10,7 +10,7 @@ import 'package:foodship_seller_app/widgets/loading_dialog.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as fStorage;
+import 'package:firebase_storage/firebase_storage.dart' as f_storage;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../global/global.dart';
@@ -83,18 +83,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               context: context,
               builder: (c) {
                 return LoadingDialog(
-                  message: "Registering Account",
+                  message: "Registering Account,",
                 );
               });
 
           String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-          fStorage.Reference reference = fStorage.FirebaseStorage.instance
+          f_storage.Reference reference = f_storage.FirebaseStorage.instance
               .ref()
               .child('sellers')
               .child(fileName);
-          fStorage.UploadTask uploadTask =
+          f_storage.UploadTask uploadTask =
               reference.putFile(File(imageXFile!.path));
-          fStorage.TaskSnapshot taskSnapshot =
+          f_storage.TaskSnapshot taskSnapshot =
               await uploadTask.whenComplete(() {});
           await taskSnapshot.ref.getDownloadURL().then((url) {
             sellerImageUrl = url;
