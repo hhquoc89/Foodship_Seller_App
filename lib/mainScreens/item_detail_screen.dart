@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodship_seller_app/global/global.dart';
 import 'package:foodship_seller_app/models/items.dart';
 import 'package:foodship_seller_app/widgets/simple_appbar.dart';
+import 'package:intl/intl.dart';
 
 class ItemDetailsScreen extends StatefulWidget {
   final Items? model;
@@ -25,15 +26,53 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
         .collection('items')
         .doc(itemID)
         .delete();
-    Fluttertoast.showToast(msg: 'Detele Item Successfully!!!');
+    Fluttertoast.showToast(msg: 'Xóa món thành công!!!');
+    Navigator.pop(context);
+  }
+
+  adjustAvailableStatus(String itemID) {
+    FirebaseFirestore.instance
+        .collection('sellers')
+        .doc(sharedPreferences!.getString('uid'))
+        .collection('menus')
+        .doc(widget.model!.menuID!)
+        .collection('items')
+        .doc(itemID)
+        .update({'status': 'available'});
+    FirebaseFirestore.instance
+        .collection('items')
+        .doc(itemID)
+        .update({'status': 'available'});
+    Fluttertoast.showToast(msg: 'Thay đổi trạng thái món ăn thành công!!!');
+    Navigator.pop(context);
+  }
+
+  adjustEmptyStatus(String itemID) {
+    FirebaseFirestore.instance
+        .collection('sellers')
+        .doc(sharedPreferences!.getString('uid'))
+        .collection('menus')
+        .doc(widget.model!.menuID!)
+        .collection('items')
+        .doc(itemID)
+        .update({'status': 'empty'});
+    FirebaseFirestore.instance
+        .collection('items')
+        .doc(itemID)
+        .update({'status': 'empty'});
+    Fluttertoast.showToast(msg: 'Thay đổi trạng thái món ăn thành công!!!');
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    String? message;
+    String? status = widget.model!.status;
+
+    status == 'available' ? message = "Còn hàng" : message = "Hết hàng";
     return Scaffold(
       appBar: SimpleAppBar(
-        title: sharedPreferences!.getString('name') ?? '' + 'Details',
+        title: 'Chi tiết món ăn',
       ),
       body: ListView(
         children: [
@@ -61,30 +100,66 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              widget.model!.price!.toString() + " VND",
+              oCcy.format(widget.model!.price!).toString() + 'đ',
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
             ),
           ),
           const SizedBox(
             height: 10,
           ),
-          Center(
-            child: InkWell(
-              onTap: () {
-                deleteItem(widget.model!.itemID!);
-              },
-              child: Container(
-                color: Colors.red,
-                width: MediaQuery.of(context).size.width - 13,
-                height: 50,
-                child: Center(
-                  child: Text(
-                    'Delete Item ',
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              status == 'available'
+                  ? InkWell(
+                      onTap: () {
+                        adjustEmptyStatus(widget.model!.itemID!);
+                      },
+                      child: Container(
+                        color: Colors.orange,
+                        width: MediaQuery.of(context).size.width * .4,
+                        height: 50,
+                        child: const Center(
+                          child: Text(
+                            'Báo hết',
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                        ),
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        adjustAvailableStatus(widget.model!.itemID!);
+                      },
+                      child: Container(
+                        color: Colors.green,
+                        width: MediaQuery.of(context).size.width * .4,
+                        height: 50,
+                        child: Center(
+                          child: const Text(
+                            'Báo có hàng',
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                        ),
+                      ),
+                    ),
+              InkWell(
+                onTap: () {
+                  deleteItem(widget.model!.itemID!);
+                },
+                child: Container(
+                  color: Colors.red,
+                  width: MediaQuery.of(context).size.width * .4,
+                  height: 50,
+                  child: const Center(
+                    child: Text(
+                      'Xóa món',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),

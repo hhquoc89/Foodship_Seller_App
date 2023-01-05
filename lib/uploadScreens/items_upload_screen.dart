@@ -9,6 +9,7 @@ import 'package:foodship_seller_app/widgets/error_dialog.dart';
 import 'package:foodship_seller_app/widgets/progress_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storgeRef;
+import 'package:intl/intl.dart';
 
 class ItemsUploadScreen extends StatefulWidget {
   final Menus? model;
@@ -26,6 +27,16 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
   TextEditingController titleInfoController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+
+  String _formatNumber(String s) {
+    if (s == '') {
+      s = "0";
+    }
+    return NumberFormat.decimalPattern(locale).format(int.parse(s));
+  }
+
+  String get _currency =>
+      NumberFormat.compactSimpleCurrency(locale: locale).currencySymbol;
 
   bool uploading = false;
   String uniqueIdName = DateTime.now()
@@ -49,8 +60,8 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
           )),
         ),
         title: const Text(
-          'Add New Item',
-          style: TextStyle(fontFamily: 'Signatra', fontSize: 30),
+          'Thêm món',
+          style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -91,7 +102,7 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
                   takeImage(context);
                 },
                 child: const Text(
-                  'Add New Item',
+                  'Thêm món mới',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 style: ButtonStyle(
@@ -123,8 +134,8 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
           )),
         ),
         title: const Text(
-          'Uploading The Item',
-          style: TextStyle(fontFamily: 'Signatra', fontSize: 30),
+          'Thêm món mới',
+          style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -141,7 +152,7 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
           TextButton(
               onPressed: uploading ? null : () => validateUploadForm(),
               child: const Text(
-                'Add',
+                'Thêm',
                 style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
@@ -178,7 +189,7 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
                 style: const TextStyle(color: Colors.black),
                 controller: titleInfoController,
                 decoration: const InputDecoration(
-                  labelText: 'Title',
+                  labelText: 'Tên món',
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
               ),
@@ -196,7 +207,7 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
                 style: const TextStyle(color: Colors.black),
                 controller: shortInfoController,
                 decoration: const InputDecoration(
-                  labelText: 'Information',
+                  labelText: 'Giới thiệu ngắn về món',
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
               ),
@@ -214,7 +225,7 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
                 style: const TextStyle(color: Colors.black),
                 controller: descriptionController,
                 decoration: const InputDecoration(
-                  labelText: 'Description',
+                  labelText: 'Thông tin của món',
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
               ),
@@ -233,9 +244,16 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
                 style: const TextStyle(color: Colors.black),
                 controller: priceController,
                 decoration: const InputDecoration(
-                  labelText: 'Price',
+                  labelText: 'Giá tiền (VND)',
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
+                onChanged: (string) {
+                  string = _formatNumber(string.replaceAll(',', ''));
+                  priceController.value = TextEditingValue(
+                    text: string,
+                    selection: TextSelection.collapsed(offset: string.length),
+                  );
+                },
               ),
             ),
           ),
@@ -249,25 +267,25 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
         context: mContext,
         builder: (context) {
           return SimpleDialog(
-            title: const Text('Choose Image '),
+            title: const Text('Chọn Ảnh từ ... '),
             children: [
               SimpleDialogOption(
                 child: const Text(
-                  "Capture with Camera",
+                  "Chụp Ảnh từ Camera",
                   style: TextStyle(color: Colors.grey),
                 ),
                 onPressed: captureImageWithCamera,
               ),
               SimpleDialogOption(
                 child: const Text(
-                  "Select from Gallery",
+                  "Chọn từ Thư viện Ảnh",
                   style: TextStyle(color: Colors.grey),
                 ),
                 onPressed: pickImageFromGallery,
               ),
               SimpleDialogOption(
                 child: const Text(
-                  "Cancel",
+                  "Hủy",
                   style: TextStyle(color: Colors.red),
                   textAlign: TextAlign.end,
                 ),
@@ -325,20 +343,31 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
         showDialog(
             context: context,
             builder: (c) {
-              return ErrorDialog(
-                  message: "Please insert information or title menu");
+              return ErrorDialog(message: "Vui lòng điền đầy đủ các thông tin");
             });
       }
     } else {
       showDialog(
           context: context,
           builder: (c) {
-            return ErrorDialog(message: "Please insert a image");
+            return ErrorDialog(message: "Vui lòng thêm Ảnh cho món");
           });
     }
   }
 
+  setKeyWordTitle(String textInput) {
+    List<String> keywordsList = [];
+    String temp = "";
+    for (int i = 0; i < textInput.length; i++) {
+      temp = temp + textInput[i];
+      keywordsList.add(temp);
+    }
+
+    return keywordsList;
+  }
+
   saveInfo(String dowloadUrl, String shortInfo, String titleMenu) {
+    print(priceController.text.replaceAll(RegExp('[^0-9]'), ''));
     final ref = FirebaseFirestore.instance
         .collection('sellers')
         .doc(sharedPreferences!.getString('uid'))
@@ -353,8 +382,9 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
       'sellerName': sharedPreferences!.getString('name'),
       'shortInfo': shortInfoController.text.toString(),
       'longDescription': descriptionController.text.toString(),
-      'price': int.parse(priceController.text),
+      'price': int.parse(priceController.text.replaceAll(RegExp('[^0-9]'), '')),
       'title': titleInfoController.text.toString(),
+      'title_keywords': setKeyWordTitle(titleInfoController.text.trim()),
       'publishedDate': DateTime.now(),
       'status': 'available',
       'thumbnailUrl': dowloadUrl,
@@ -367,8 +397,10 @@ class _ItemsUploadScreen extends State<ItemsUploadScreen> {
         'sellerName': sharedPreferences!.getString('name'),
         'shortInfo': shortInfoController.text.toString(),
         'longDescription': descriptionController.text.toString(),
-        'price': int.parse(priceController.text),
+        'price':
+            int.parse(priceController.text.replaceAll(RegExp('[^0-9]'), '')),
         'title': titleInfoController.text.toString(),
+        'title_keywords': setKeyWordTitle(titleInfoController.text.toString()),
         'publishedDate': DateTime.now(),
         'status': 'available',
         'thumbnailUrl': dowloadUrl,

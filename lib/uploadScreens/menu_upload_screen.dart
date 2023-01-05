@@ -46,8 +46,8 @@ class _MenuUploadScreenState extends State<MenuUploadScreen> {
           )),
         ),
         title: const Text(
-          'Add New Menu',
-          style: TextStyle(fontFamily: 'Signatra', fontSize: 30),
+          'Thêm menu',
+          style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -88,7 +88,7 @@ class _MenuUploadScreenState extends State<MenuUploadScreen> {
                   takeImage(context);
                 },
                 child: const Text(
-                  'Add new Menu',
+                  'Thêm menu mới',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 style: ButtonStyle(
@@ -120,8 +120,8 @@ class _MenuUploadScreenState extends State<MenuUploadScreen> {
           )),
         ),
         title: const Text(
-          'Uploading The Menu',
-          style: TextStyle(fontFamily: 'Signatra', fontSize: 30),
+          'Thêm menu mới',
+          style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -138,7 +138,7 @@ class _MenuUploadScreenState extends State<MenuUploadScreen> {
           TextButton(
               onPressed: uploading ? null : () => validateUploadForm(),
               child: const Text(
-                'Add',
+                'Thêm',
                 style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
@@ -175,7 +175,7 @@ class _MenuUploadScreenState extends State<MenuUploadScreen> {
                 controller: titleInfoController,
                 inputFormatters: [],
                 decoration: const InputDecoration(
-                  labelText: 'Menu Title',
+                  labelText: 'Tên menu',
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
               ),
@@ -193,7 +193,7 @@ class _MenuUploadScreenState extends State<MenuUploadScreen> {
                 style: const TextStyle(color: Colors.black),
                 controller: shortInfoController,
                 decoration: const InputDecoration(
-                  labelText: 'Menu Information',
+                  labelText: 'Thông tin về menu',
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
               ),
@@ -209,25 +209,25 @@ class _MenuUploadScreenState extends State<MenuUploadScreen> {
         context: mContext,
         builder: (context) {
           return SimpleDialog(
-            title: const Text('Choose Image '),
+            title: const Text('Chọn Ảnh từ... '),
             children: [
               SimpleDialogOption(
                 child: const Text(
-                  "Capture with Camera",
+                  "Chụp ảnh từ Camera",
                   style: TextStyle(color: Colors.grey),
                 ),
                 onPressed: captureImageWithCamera,
               ),
               SimpleDialogOption(
                 child: const Text(
-                  "Select from Gallery",
+                  "Chọn từ Thư viện..",
                   style: TextStyle(color: Colors.grey),
                 ),
                 onPressed: pickImageFromGallery,
               ),
               SimpleDialogOption(
                 child: const Text(
-                  "Cancel",
+                  "Hủy",
                   style: TextStyle(color: Colors.red),
                   textAlign: TextAlign.end,
                 ),
@@ -281,15 +281,14 @@ class _MenuUploadScreenState extends State<MenuUploadScreen> {
         showDialog(
             context: context,
             builder: (c) {
-              return ErrorDialog(
-                  message: "Please insert information or title menu");
+              return ErrorDialog(message: "Vui lòng nhập đầy đủ thông tin!");
             });
       }
     } else {
       showDialog(
           context: context,
           builder: (c) {
-            return ErrorDialog(message: "Please insert a image");
+            return ErrorDialog(message: "Vui lòng chọn ảnh");
           });
     }
   }

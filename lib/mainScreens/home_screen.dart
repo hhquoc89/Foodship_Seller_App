@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: Text(
           sharedPreferences!.getString("name")!,
-          style: const TextStyle(fontFamily: 'Signatra', fontSize: 30),
+          style: const TextStyle(fontSize: 20),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 .collection('sellers')
                 .doc(sharedPreferences!.getString('uid'))
                 .collection('menus')
-                .orderBy("publishedDate",descending: true)
+                .orderBy("publishedDate", descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
               return !snapshot.hasData

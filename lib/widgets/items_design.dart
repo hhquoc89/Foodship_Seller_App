@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodship_seller_app/mainScreens/item_detail_screen.dart';
 import 'package:foodship_seller_app/mainScreens/items_screen.dart';
 import 'package:foodship_seller_app/models/items.dart';
+import 'package:foodship_seller_app/respository/assitant_method.dart';
 
 class ItemsDesignWidget extends StatefulWidget {
   Items? model;
@@ -15,6 +16,10 @@ class ItemsDesignWidget extends StatefulWidget {
 class _ItemsDesignWidget extends State<ItemsDesignWidget> {
   @override
   Widget build(BuildContext context) {
+    String? message;
+    String? status = widget.model!.status;
+
+    status == 'available' ? message = "Còn hàng" : message = "Hết hàng";
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -38,12 +43,13 @@ class _ItemsDesignWidget extends State<ItemsDesignWidget> {
               const SizedBox(height: 15),
               Image.network(
                 widget.model!.thumbnailUrl!,
-                height: 100,
-                width: 100,
+                height: MediaQuery.of(context).size.height * .1,
+                width: MediaQuery.of(context).size.height * .1,
                 fit: BoxFit.cover,
               ),
               Text(
                 widget.model!.title!,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.cyan,
                   fontSize: 20,
@@ -53,9 +59,9 @@ class _ItemsDesignWidget extends State<ItemsDesignWidget> {
                 height: 10.0,
               ),
               Text(
-                widget.model!.shortInfo!,
-                style: const TextStyle(
-                  color: Colors.grey,
+                status == "available" ? message : message.toCapitalized(),
+                style: TextStyle(
+                  color: status == 'available' ? Colors.green : Colors.red,
                   fontSize: 12,
                 ),
               ),

@@ -21,9 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sellers App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Roboto'),
+      debugShowCheckedModeBanner: false,
       home: const MySplashScreen(),
     );
   }

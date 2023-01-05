@@ -8,7 +8,10 @@ class ErrorDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       key: key,
-      content: Text(message!),
+      content: Text(
+        message!,
+        textAlign: TextAlign.center,
+      ),
       actions: [
         ElevatedButton(
           child: const Center(

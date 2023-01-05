@@ -26,7 +26,7 @@ class StatusBanner extends StatelessWidget {
           ),
           Text(
             orderStatus == "ended"
-                ? "Parcel Delivered $message"
+                ? "Order $message Done"
                 : "Order Placed $message",
             style: const TextStyle(color: Colors.green),
           ),

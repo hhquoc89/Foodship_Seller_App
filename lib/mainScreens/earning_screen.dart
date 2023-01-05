@@ -42,12 +42,14 @@ class _EarningsScreenState extends State<EarningsScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                sellerTotalEarnings.toString() + ' đ',
+                oCcy.format(sellerTotalEarnings) + 'đ',
                 style: const TextStyle(
-                    fontSize: 80, color: Colors.white, fontFamily: "Signatra"),
+                  fontSize: 80,
+                  color: Colors.white,
+                ),
               ),
               const Text(
-                "Total Earnings",
+                "Tổng cộng",
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey,
@@ -68,10 +70,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (c) => const MySplashScreen()));
+                  Navigator.pop(context);
                 },
                 child: const Card(
                   color: Colors.white54,
@@ -82,7 +81,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
                       color: Colors.white,
                     ),
                     title: Text(
-                      "Back",
+                      "Trở về",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,

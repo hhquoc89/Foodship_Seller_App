@@ -40,7 +40,8 @@ class _ItemsScreenState extends State<ItemsScreen> {
           ),
           title: Text(
             sharedPreferences!.getString("name")!,
-            style: const TextStyle(fontFamily: 'Signatra', fontSize: 30),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 20),
           ),
           centerTitle: true,
           automaticallyImplyLeading: true,
@@ -65,7 +66,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
             backgroundColor: Colors.transparent,
             title: Center(
                 child: Text(
-              widget.model!.menuTitle.toString() + ' Items',
+              widget.model!.menuTitle.toString(),
               style: TextStyle(color: Colors.black),
             )),
             automaticallyImplyLeading: false,

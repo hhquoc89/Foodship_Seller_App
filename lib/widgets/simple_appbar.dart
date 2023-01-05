@@ -26,7 +26,7 @@ class SimpleAppBar extends StatelessWidget with PreferredSizeWidget {
       ),
       title: Text(
         title!,
-        style: const TextStyle(fontFamily: 'Signatra', fontSize: 30),
+        style: const TextStyle(fontSize: 26),
       ),
       centerTitle: true,
       automaticallyImplyLeading: true,

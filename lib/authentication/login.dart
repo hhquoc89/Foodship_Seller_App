@@ -53,13 +53,14 @@ class _LoginScreenState extends State<LoginScreen> {
           .then((auth) {
         currentUser = auth.user!;
       });
-    } on FirebaseAuthException catch (error) {
+    } on FirebaseAuthException {
       Navigator.pop(context);
       showDialog(
           context: context,
           builder: (c) {
             return ErrorDialog(
-              message: "Invalid the account/password. Please try it again",
+              message:
+                  "Tài khoản hoặc mật khẩu không chính xác ! Vui lòng nhập lại!!",
             );
           });
     }
@@ -83,18 +84,19 @@ class _LoginScreenState extends State<LoginScreen> {
         await sharedPreferences!
             .setString("photoUrl", snapshot.data()!["sellerAvatarUrl"]);
         Navigator.pop(context);
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (c) => const HomeScreen()));
       } else {
         firebaseAuth.signOut();
         Navigator.pop(context);
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (c) => const AuthScreen()));
         showDialog(
             context: context,
             builder: (c) {
               return ErrorDialog(
-                message: "Invalid the account/password. Please try it again",
+                message:
+                    "Tài khoản hoặc mật khẩu không chính xác ! Vui lòng nhập lại!!",
               );
             });
       }
@@ -110,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Image.asset(
                 "images/seller.png",
                 height: 270,
@@ -130,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomTextField(
                   data: Icons.lock,
                   controller: passwordController,
-                  hintText: "Password",
+                  hintText: "Mật khẩu",
                   isObsecre: true,
                 ),
               ],
@@ -138,13 +140,13 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           ElevatedButton(
             child: const Text(
-              "Sign Up",
+              "Đăng nhập",
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             style: ElevatedButton.styleFrom(
               primary: Colors.lightBlueAccent,
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             ),
             onPressed: () {
               formValidation();
