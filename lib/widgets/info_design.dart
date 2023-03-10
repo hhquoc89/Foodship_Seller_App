@@ -67,16 +67,6 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                       fontSize: 20,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    widget.model!.menuInfo!,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -95,14 +85,14 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text(
-                              "Delete Menu",
+                              "Xóa menu",
                               style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red),
                             ),
                             content: const Text(
-                              "Do you want to delete this menu ?",
+                              "Bạn có muốn xóa menu này không ?",
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -112,14 +102,14 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: const Text("No"),
+                                child: const Text("Không"),
                               ),
                               ElevatedButton(
                                 onPressed: () {
                                   deleteMenu(widget.model!.menuID!);
                                   Navigator.pop(context);
                                 },
-                                child: const Text("Yes"),
+                                child: const Text("Có"),
                               ),
                             ],
                           );

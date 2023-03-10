@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodship_seller_app/global/global.dart';
+import 'package:foodship_seller_app/models/order.dart';
 import 'package:foodship_seller_app/respository/assitant_method.dart';
 import 'package:foodship_seller_app/widgets/order_card.dart';
 import 'package:foodship_seller_app/widgets/progress_bar.dart';
@@ -17,47 +18,39 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: SimpleAppBar(
-          title: "History",
+          title: "Lịch sử",
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("orders")
-              .where("sellerUID",
-                  isEqualTo: sharedPreferences!.getString("uid"))
               .where("status", isEqualTo: "ended")
-              .orderBy("orderTime", descending: true)
               .snapshots(),
           builder: (c, snapshot) {
             return snapshot.hasData
                 ? ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (c, index) {
-                      return FutureBuilder<QuerySnapshot>(
-                        future: FirebaseFirestore.instance
-                            .collection("items")
-                            .where("itemID",
-                                whereIn: separateOrderItemIDs(
-                                    (snapshot.data!.docs[index].data()!
-                                        as Map<String, dynamic>)["productIDs"]))
-                            .where("sellerUID",
-                                whereIn: (snapshot.data!.docs[index].data()!
-                                    as Map<String, dynamic>)["uid"])
-                            .orderBy("publishedDate", descending: true)
-                            .get(),
-                        builder: (c, snap) {
-                          return snap.hasData
-                              ? OrderCard(
-                                  itemCount: snap.data!.docs.length,
-                                  data: snap.data!.docs,
-                                  orderID: snapshot.data!.docs[index].id,
-                                  seperateQuantitiesList:
-                                      separateOrderItemQuantities(
-                                          (snapshot.data!.docs[index].data()!
-                                                  as Map<String, dynamic>)[
-                                              "productIDs"]),
-                                )
-                              : Center(child: circularProgress());
-                        },
+                      return Column(
+                        children: [
+                          FutureBuilder<QuerySnapshot>(
+                            future: FirebaseFirestore.instance
+                                .collection("orders")
+                                .where('ordersList')
+                                .get(),
+                            builder: (c, snap) {
+                              Map<String, dynamic> data =
+                                  snapshot.data!.docs[index].data()
+                                      as Map<String, dynamic>;
+                              final orders = Orders.fromJson(data);
+
+                              return snap.hasData
+                                  ? OrderCard(
+                                      orders: orders,
+                                    )
+                                  : Center(child: circularProgress());
+                            },
+                          ),
+                        ],
                       );
                     },
                   )

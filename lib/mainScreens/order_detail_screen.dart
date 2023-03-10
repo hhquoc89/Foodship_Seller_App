@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:foodship_seller_app/global/global.dart';
 import 'package:foodship_seller_app/models/address.dart';
+import 'package:foodship_seller_app/widgets/progress_bar.dart';
+import 'package:foodship_seller_app/widgets/shipment_address.dart';
+import 'package:foodship_seller_app/widgets/simple_appbar.dart';
+import 'package:foodship_seller_app/widgets/status_banner.dart';
 
 import 'package:intl/intl.dart';
-
-import '../widgets/progress_bar.dart';
-import '../widgets/shipment_address.dart';
-import '../widgets/simple_appbar.dart';
-import '../widgets/status_banner.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   final String? orderID;
@@ -43,7 +43,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SimpleAppBar(title: 'Order Detail'),
+      appBar: SimpleAppBar(title: 'Chi tiết đơn hàng'),
       body: SingleChildScrollView(
           child: FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
@@ -68,7 +68,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ),
                           Center(
                             child: Text(
-                                DateFormat("dd MMMM, yyyy - hh:mm aa").format(
+                                DateFormat("dd/MM/yyyy - hh:mm aa").format(
                                     DateTime.fromMillisecondsSinceEpoch(
                                         int.parse(dataMap["orderTime"]))),
                                 style: const TextStyle(
@@ -87,10 +87,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  'Total :',
+                                  'Tổng cộng :',
                                   style: TextStyle(fontSize: 18),
                                 ),
-                                Text('${dataMap['totalAmount']} VND',
+                                Text('${oCcy.format(dataMap['totalAmount'])}đ',
                                     style: const TextStyle(fontSize: 18)),
                               ],
                             ),
@@ -105,7 +105,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  'Order ID :',
+                                  'Mã đơn hàng :',
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold),

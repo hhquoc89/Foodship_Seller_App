@@ -14,7 +14,7 @@ class StatusBanner extends StatelessWidget {
     IconData? iconData;
 
     status! ? iconData = Icons.done : iconData = Icons.cancel;
-    status! ? message = "Successful" : message = "Unsuccessful";
+    status! ? message = "thành công" : message = "Unsuccessful";
 
     return Container(
       height: 100,
@@ -26,8 +26,8 @@ class StatusBanner extends StatelessWidget {
           ),
           Text(
             orderStatus == "ended"
-                ? "Order $message Done"
-                : "Order Placed $message",
+                ? "Đơn đã làm xong $message"
+                : "Đơn đặt $message",
             style: const TextStyle(color: Colors.green),
           ),
           const SizedBox(
